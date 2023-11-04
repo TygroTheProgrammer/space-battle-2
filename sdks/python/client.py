@@ -57,6 +57,11 @@ class Game:
         commands = [];
         for unit_id in self.game_units:
             direction = random.choice(self.directions)
+
+            # If path, follow path
+            if unit_id in self.units_path:
+                # TODO override direction to follow path
+
             move = 'MOVE'
             commands.append({"command": move, "unit": unit_id, "dir": direction}]);
 
@@ -74,7 +79,6 @@ class Game:
                         # TODO assign path to worker
                         resource['prio'] == 'closed';
                         break;
-
 
     def update_map(self, json_tile_data):
         for tile in json_tile_data:
