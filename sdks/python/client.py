@@ -3,6 +3,9 @@
 import sys
 import json
 import random
+from pathfinding.core.diagonal_movement import DiagonalMovement
+from pathfinding.core.grid import Grid
+from pathfinding.finder.a_star import AStarFinder
 
 if (sys.version_info > (3, 0)):
     print("Python 3.X detected")
