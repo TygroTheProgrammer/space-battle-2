@@ -105,6 +105,45 @@ class Game:
         command = {"commands": [{"command": move, "unit": unit_id, "dir": direction}]}
         return command;
 
+<<<<<<< Updated upstream
+=======
+    def move_to(self, json_data, u, to_x, to_y):
+        grid = Grid(self.game_map); #TODO Assign numeric values to obstacles
+        finder = AStarFinder(diagonal_movement=DiagonalMovement.never);
+        
+        start = grid.node(u['x'], u['y']);
+        end = grid.node(to_x, to_y);
+
+        path, _ = finder.find_path(start, end, grid);
+        
+        # Translate path into commands
+        commands = []
+        for i in range(1, len(path)):
+            dx = path[i][0] - path[i-1][0]
+            dy = path[i][1] - path[i-1][1]
+            if dx > 0:
+                commands.append("E")
+            elif dx < 0:
+                commands.append("W")
+            elif dy > 0:
+                commands.append("S")
+            elif dy < 0:
+                commands.append("N")
+    
+
+        return commands
+
+        
+        
+        
+
+
+
+
+
+
+
+>>>>>>> Stashed changes
 if __name__ == "__main__":
     port = int(sys.argv[1]) if (len(sys.argv) > 1 and sys.argv[1]) else 9090
     host = '0.0.0.0';
