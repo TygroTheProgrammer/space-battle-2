@@ -41,6 +41,7 @@ class Game:
         self.directions = ['N', 'S', 'E', 'W']
         self.init = False;
         self.resources = dict();
+        self.units = set();
 
     def analyze(self, json_data):
         # Probably not the best, way, but ehh
@@ -62,7 +63,7 @@ class Game:
     def update_map(self, json_tile_data):
         for tile in json_tile_data:
             self.game_map[tile['x']][tile['y']] = tile;
-            if tile['resources'] != 'null':
+            if 'resources' in tile and tile['resources']:
                 self.add_resource(tile['resources']);
 
     def add_resource(self, resource):
@@ -77,12 +78,11 @@ class Game:
             self.game_units[unit['id']] = unit;
 
     def get_random_move(self, json_data):
-        units = set([unit['id'] for unit in json_data['unit_updates'] if unit['type'] != 'base'])
-        self.units |= units # add any additional ids we encounter
-        unit = random.choice(tuple(self.units))
+        unit_id = random.choice(tuple(self.game_units.keys()));
+        # print(f"Random was: {unit}");
         direction = random.choice(self.directions)
         move = 'MOVE'
-        command = {"commands": [{"command": move, "unit": unit, "dir": direction}]}
+        command = {"commands": [{"command": move, "unit": unit_id, "dir": direction}]}
         response = json.dumps(command, separators=(',',':')) + '\n'
         return response;
 
