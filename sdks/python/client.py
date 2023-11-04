@@ -27,14 +27,6 @@ class NetworkHandler(ss.StreamRequestHandler):
                 self.wfile.write(response)
 
 class Game:
-    # Notes for vars (for me)
-    init: bool;
-    info: dict;
-    units: dict;
-    game_map: list;
-    game_units: dict;
-    resources: list;
-
     def __init__(self):
         self.game_units = dict(); # set of unique unit ids
         self.game_map = list();
@@ -42,6 +34,7 @@ class Game:
         self.init = False;
         self.resources = dict();
         self.units = set();
+        self.units_path = dict();
 
     def analyze(self, json_data):
         # Probably not the best, way, but ehh
@@ -59,11 +52,29 @@ class Game:
         self.update_map(tiles);
 
         # Logic
-        self.do_work();
+        self.assign_work();
         
-        rand_command = self.get_random_move(json_data);
-        response = json.dumps(command, separators=(',',':')) + '\n'
+        commands = [];
+        for unit_id in self.game_units:
+            direction = random.choice(self.directions)
+            move = 'MOVE'
+            commands.append({"command": move, "unit": unit_id, "dir": direction}]);
+
+        response = json.dumps(commands, separators=(',',':')) + '\n'
         return response;
+
+    def assign_work(self):
+        # Nasty indentation here
+        for resource in self.resources:
+            # Check if each resource is open
+            if resource['prio'] == 'open':
+                # Find worker
+                for unit_id in self.game_units:
+                    if not unit_id in self.units_path:
+                        # TODO assign path to worker
+                        resource['prio'] == 'closed';
+                        break;
+
 
     def update_map(self, json_tile_data):
         for tile in json_tile_data:
@@ -74,12 +85,13 @@ class Game:
     def add_resource(self, resource):
         if not resource['id'] in self.resources:
             self.resources[resource['id']] = resource;
-        print(json.dumps(resource, indent=4, sort_keys=True))
+            self.resources[resource['id']]['prio'] = 'open'; 
+            print(json.dumps(resource, indent=4, sort_keys=True))
 
     def update_units(self, json_unit_data):
         for unit in json_unit_data:
-            if not unit['id'] in self.game_units:
-                unit['task'] = 'search';
+            if not unit['id'] in self.game_units;
+                self.units_path[unit['id'] = None;
             self.game_units[unit['id']] = unit;
 
     def get_random_move(self, json_data):
