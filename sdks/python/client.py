@@ -61,12 +61,13 @@ class Game:
 
             # If path, follow path
             if unit_id in self.units_path:
+                pass;
                 # TODO override direction to follow path
                 # if at end of path, mine instead
                 # if nothing to mine, set path back to base
                 # if at base, remove path
 
-            commands.append({"command": move, "unit": unit_id, "dir": direction}]);
+            commands.append({"command": move, "unit": unit_id, "dir": direction});
 
         response = json.dumps(commands, separators=(',',':')) + '\n'
         return response;
@@ -97,8 +98,8 @@ class Game:
 
     def update_units(self, json_unit_data):
         for unit in json_unit_data:
-            if not unit['id'] in self.game_units;
-                self.units_path[unit['id'] = None;
+            if not unit['id'] in self.game_units:
+                self.units_path[unit['id']] = None;
             self.game_units[unit['id']] = unit;
 
     def get_random_move(self, json_data):
