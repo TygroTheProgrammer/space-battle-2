@@ -3,6 +3,7 @@
 import sys
 import json
 import random
+import math;
 
 if (sys.version_info > (3, 0)):
     print("Python 3.X detected")
@@ -34,11 +35,23 @@ class Game:
         self.units |= units # add any additional ids we encounter
 
         commands = list();
+
         for unit_id in self.units:
             rand_direction = random.choice(self.directions)
             for direction in self.directions:
                 commands.append({"command": "GATHER", "unit": unit_id, "dir": direction});
             commands.append({"command": "MOVE", "unit": unit_id, "dir": rand_direction});
+
+            # Drop
+            for unit in json_data['unit_updates']:
+                if unit['id'] == unit_id:
+                    if abs(unit['x']) > abs(unit['y']):
+                        drop_dir = "W" if unit['x'] > 0 else "E";
+                        commands.append({"command": "DROP", "unit": unit_id, "dir": drop_dir, 'value': unit["resource"]});
+                    else:
+                        drop_dir = "N" if unit['y'] > 0 else "S";
+                        commands.append({"command": "DROP", "unit": unit_id, "dir": drop_dir, 'value': unit["resource"]});
+
         commands = {"commands": commands};
 
         response = json.dumps(commands, separators=(',',':')) + '\n'
