@@ -108,8 +108,6 @@ class Game:
         command = {"commands": [{"command": move, "unit": unit_id, "dir": direction}]}
         return command;
 
-<<<<<<< Updated upstream
-=======
     def move_to(self, json_data, u, to_x, to_y):
         grid = Grid(self.game_map); #TODO Assign numeric values to obstacles
         finder = AStarFinder(diagonal_movement=DiagonalMovement.never);
@@ -136,17 +134,8 @@ class Game:
 
         return commands
 
-        
-        
-        
 
 
-
-
-
-
-
->>>>>>> Stashed changes
 if __name__ == "__main__":
     port = int(sys.argv[1]) if (len(sys.argv) > 1 and sys.argv[1]) else 9090
     host = '0.0.0.0';
