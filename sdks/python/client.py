@@ -57,12 +57,15 @@ class Game:
         commands = [];
         for unit_id in self.game_units:
             direction = random.choice(self.directions)
+            command = "MOVE";
 
             # If path, follow path
             if unit_id in self.units_path:
                 # TODO override direction to follow path
+                # if at end of path, mine instead
+                # if nothing to mine, set path back to base
+                # if at base, remove path
 
-            move = 'MOVE'
             commands.append({"command": move, "unit": unit_id, "dir": direction}]);
 
         response = json.dumps(commands, separators=(',',':')) + '\n'
