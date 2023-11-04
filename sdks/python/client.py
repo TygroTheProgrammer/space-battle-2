@@ -32,16 +32,16 @@ class Game:
     def get_random_move(self, json_data):
         units = set([unit['id'] for unit in json_data['unit_updates'] if unit['type'] != 'base'])
         self.units |= units # add any additional ids we encounter
-
-        for unit_id in self.units;
-
-        unit = random.choice(tuple(self.units))
         direction = random.choice(self.directions)
 
         commands = list();
-        commands.append({"command": "MOVE", "unit": unit, "dir": direction});
-        commands.append({"commands": 
-        response = json.dumps(command, separators=(',',':')) + '\n'
+        for unit_id in self.units:
+            for direction in self.directions:
+                commands.append({"command": "GATHER", "unit": unit_id, "dir": direction});
+            command.append({"command": "MOVE", "unit": unit_id, "dir": direction});
+        commands = {"commands": commands};
+
+        response = json.dumps(commands, separators=(',',':')) + '\n'
         return response
 
 if __name__ == "__main__":
