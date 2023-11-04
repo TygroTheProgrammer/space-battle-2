@@ -58,7 +58,12 @@ class Game:
         tiles = json_data['tile_updates'];
         self.update_map(tiles);
 
-        return self.get_random_move(json_data);
+        # Logic
+        self.do_work();
+        
+        rand_command = self.get_random_move(json_data);
+        response = json.dumps(command, separators=(',',':')) + '\n'
+        return response;
 
     def update_map(self, json_tile_data):
         for tile in json_tile_data:
@@ -79,12 +84,10 @@ class Game:
 
     def get_random_move(self, json_data):
         unit_id = random.choice(tuple(self.game_units.keys()));
-        # print(f"Random was: {unit}");
         direction = random.choice(self.directions)
         move = 'MOVE'
         command = {"commands": [{"command": move, "unit": unit_id, "dir": direction}]}
-        response = json.dumps(command, separators=(',',':')) + '\n'
-        return response;
+        return command;
 
 if __name__ == "__main__":
     port = int(sys.argv[1]) if (len(sys.argv) > 1 and sys.argv[1]) else 9090
