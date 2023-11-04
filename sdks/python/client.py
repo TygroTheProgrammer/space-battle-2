@@ -24,8 +24,6 @@ class NetworkHandler(ss.StreamRequestHandler):
             response = game.get_random_move(json_data).encode()
             self.wfile.write(response)
 
-
-
 class Game:
     def __init__(self):
         self.units = set() # set of unique unit ids
@@ -34,10 +32,15 @@ class Game:
     def get_random_move(self, json_data):
         units = set([unit['id'] for unit in json_data['unit_updates'] if unit['type'] != 'base'])
         self.units |= units # add any additional ids we encounter
+
+        for unit_id in self.units;
+
         unit = random.choice(tuple(self.units))
         direction = random.choice(self.directions)
-        move = 'MOVE'
-        command = {"commands": [{"command": move, "unit": unit, "dir": direction}]}
+
+        commands = list();
+        commands.append({"command": "MOVE", "unit": unit, "dir": direction});
+        commands.append({"commands": 
         response = json.dumps(command, separators=(',',':')) + '\n'
         return response
 
